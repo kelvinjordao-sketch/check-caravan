@@ -655,42 +655,43 @@ const PANEL = {
 };
 
 // Perguntas extras do simulado
+// [pergunta, certa, erradas, explicação, assunto]
 const QX = [
- ["Em que velocidade o PM fala “ROTATE”?","80 KIAS",["70 KIAS","85 KIAS","90 KIAS"]],
- ["Qual a acceleration altitude da VOARE?","400 ft AFE",["800 ft AFE","1000 ft AFE","200 ft AFE"]],
- ["Recolher flap 10 para UP a partir de:","95 KIAS",["90 KIAS","105 KIAS","110 KIAS"]],
- ["Velocidade de subida normal VOARE:","110–120 KIAS",["90–100 KIAS","130–140 KIAS","95–105 KIAS"]],
- ["ITT máxima para abrir a manete de condição na partida:","180 °C",["100 °C","300 °C","500 °C"]],
- ["Ao passar de qual ITT o COP fala “HOT START”?","900 °C",["805 °C","1090 °C","740 °C"]],
- ["Ng mínimo estável antes de levar a manete de condição a LOW IDLE:","12%",["46%","52%","5%"]],
- ["Desbalanceamento máximo de combustível em voo:","200 lb",["100 lb","300 lb","500 lb"]],
- ["Peso máximo de decolagem (VTA):","8750 lb",["8500 lb","8785 lb","8000 lb"]],
- ["RPM da hélice no After Takeoff Checklist:","1850 RPM",["1900 RPM","1750 RPM","1600 RPM"]],
- ["RPM da hélice no Cruise Checklist:","1750 RPM",["1850 RPM","1900 RPM","1650 RPM"]],
- ["Resposta do TRIM no Before Takeoff Checklist:","SET 3 TIMES",["3 SET","NEUTRAL","CHECKED"]],
- ["Resposta do FLIGHT DIRECTOR no Takeoff Checklist:","TAKEOFF, TAKEOFF",["ON","TO/GA","SET"]],
- ["Quem lê os checklists no solo (até o Takeoff)?","Copiloto",["Comandante","PF","Ninguém, é silencioso"]],
- ["O After Landing Checklist é:","Silencioso, feito pelo COP",["Lido pelo PM em voz alta","Lido pelo CMD","Desafio-resposta"]],
- ["Na regra do SOP, quando o item diz AS RQRD você fala:","A posição real do item",["“AS REQUIRED”","“CHECKED”","Nada"]],
- ["Janela de estabilização em aproximação IFR:","1000 ft AFE",["500 ft AFE","1500 ft AFE","200 ft AFE"]],
- ["Razão de descida máxima na aproximação estabilizada:","1000 ft/min",["500 ft/min","1500 ft/min","800 ft/min"]],
- ["Razão de descida padrão da VOARE:","500 ft/min",["800 ft/min","1000 ft/min","300 ft/min"]],
- ["Na arremetida com flap FULL, o PM coloca:","Flap 20",["Flap UP","Flap 10","Mantém FULL"]],
- ["Planeio após corte do motor no SOP VOARE:","85 KIAS",["95 KIAS","78 KIAS","110 KIAS"]],
- ["Pouso forçado sem motor: velocidade final","80 KIAS com flap FULL",["95 KIAS flap UP","70 KIAS flap 20","100 KIAS flap 10"]],
- ["Tempo máximo de reverso:","1 min",["30 s","2 min","5 min"]],
- ["Antes de cortar o motor, quanto tempo em idle?","1 min",["30 s","3 min","Nenhum"]],
- ["Ciclo de partida com bateria:","30 s on / 60 s off",["20 s on / 120 s off","60 s on / 30 s off","10 s on / 60 s off"]],
- ["Teste do overspeed governor: RPM esperada","1750 ± 60",["1900 ± 30","1600 ± 60","2090"]],
- ["Mínimos publicados de 1.691 ft viram:","1.700 ft",["1.690 ft","1.750 ft","1.800 ft"]],
- ["Na decolagem rejeitada, quem fala “ABORT”?","PM",["PF","Comandante sempre","Torre"]],
- ["Callout do PM ao velocímetro começar a indicar:","SPEED ALIVE",["AIRSPEED ON","SPEED CHECKED","60 KNOTS"]],
- ["Mudança inesperada no FMA, o PM fala:","CHECK FMA",["FMA CHANGED","SET FMA","AUTOPILOT"]],
- ["Mensagem CAS vermelha RSVR FUEL LOW: 1º item","FUEL TANK SELECTORS — BOTH ON",["FUEL BOOST — ON","IGNITION — ON","POWER LEVER — IDLE"]],
- ["Mensagem âmbar FUEL PRESS LOW: 2º item","FUEL BOOST — ON",["IGNITION — ON","FUEL TANK SELECTORS — BOTH ON","FUEL CONDITION — CUTOFF"]],
- ["Fogo no motor na partida: posição do STARTER","MOTOR",["OFF","START","TRIP"]],
- ["Pane da FCU: Ng mínimo usando a EMERGENCY POWER","65%",["50%","12%","101.6%"]],
- ["Flameout com Ng acima de 50%:","POWER IDLE e IGNITION ON",["FUEL CONDITION CUTOFF","PROP FEATHER","BATTERY OFF"]]
+ ["Em que velocidade o PM fala “ROTATE”?","80 KIAS",["70 KIAS","85 KIAS","90 KIAS"],"A VOARE padronizou a rotação (Vlof) em 80 KIAS para o 208B e o EX (SOP 2.2.3). 90 é a velocidade de subida inicial e 85 é o planeio sem motor.","Decolagem"],
+ ["Qual a acceleration altitude da VOARE?","400 ft AFE",["800 ft AFE","1000 ft AFE","200 ft AFE"],"SOP 2.2.4: acceleration altitude de 400 ft AFE. Ali começa o recolhimento do flap, e não se curva antes dela. 800 ft é a altura da tabela para acoplar o piloto automático.","Decolagem"],
+ ["Recolher flap 10 para UP a partir de:","95 KIAS",["90 KIAS","105 KIAS","110 KIAS"],"Sequência do SOP 2.2.5: acima de 90 KIAS vai para flap 10, acima de 95 KIAS vai para flap UP. Com 105 KIAS chama o After Takeoff Checklist.","Decolagem"],
+ ["Velocidade de subida normal VOARE:","110–120 KIAS",["90–100 KIAS","130–140 KIAS","95–105 KIAS"],"SOP 2.3.2: subida entre 110 e 120 KIAS para os dois modelos. A melhor razão é 105 (208B) e 109 (EX), mas o padrão da empresa é 110–120.","Limites"],
+ ["ITT máxima para abrir a manete de condição na partida:","180 °C",["100 °C","300 °C","500 °C"],"Limite VTA (SOP 1.2): só passe a manete de condição para LOW IDLE com ITT até 180 °C. Acima disso o motor ainda está quente e o risco de hot start aumenta.","Partida"],
+ ["Ao passar de qual ITT o COP fala “HOT START”?","900 °C",["805 °C","1090 °C","740 °C"],"SOP 2.1.7: a partida é abortada ao cruzar 900 °C, com o callout “HOT START”. 1090 °C é o limite absoluto de partida, e 805 °C é o limite de decolagem.","Partida"],
+ ["Ng mínimo estável antes de levar a manete de condição a LOW IDLE:","12%",["46%","52%","5%"],"SOP 2.1.7: o Ng precisa estabilizar acima de 12% antes de abrir o combustível. 46% é quando o starter desacopla e 52% é quando o CMD desliga o starter.","Partida"],
+ ["Desbalanceamento máximo de combustível em voo:","200 lb",["100 lb","300 lb","500 lb"],"Limite do SOP 1.2 e do placar no console do teto: 200 lb de diferença entre as asas.","Limites"],
+ ["Peso máximo de decolagem (VTA):","8750 lb",["8500 lb","8785 lb","8000 lb"],"8750 lb é o máximo de decolagem. 8500 lb é o máximo de pouso e 8785 lb é o máximo de rampa.","Limites"],
+ ["RPM da hélice no After Takeoff Checklist:","1850 RPM",["1900 RPM","1750 RPM","1600 RPM"],"SOP 2.2.8/2.2.9: na subida a hélice vai para 1850 RPM e a resposta é “SET 1850 RPM”. 1900 é a decolagem e 1750 é o cruzeiro.","Checklist"],
+ ["RPM da hélice no Cruise Checklist:","1750 RPM",["1850 RPM","1900 RPM","1650 RPM"],"SOP 2.4.1/2.4.2: ao nivelar, a hélice vai para 1750 RPM e a resposta é “SET 1750 RPM”. Na sequência: 1900 decola, 1850 sobe, 1750 cruzeiro.","Checklist"],
+ ["Resposta do TRIM no Before Takeoff Checklist:","SET 3 TIMES",["3 SET","NEUTRAL","CHECKED"],"A tabela do SOP 2.1.12 traz a resposta falada “SET 3 TIMES”. O cartão impresso mostra “3 SET”, mas a resposta oficial é a do SOP. NEUTRAL é a resposta do After Landing.","Checklist"],
+ ["Resposta do FLIGHT DIRECTOR no Takeoff Checklist:","TAKEOFF, TAKEOFF",["ON","TO/GA","SET"],"SOP 2.1.14: o cartão mostra “TO/TO” e a resposta falada é “TAKEOFF-TAKEOFF”, ou seja, modo de decolagem nos dois lados.","Checklist"],
+ ["Quem lê os checklists no solo (até o Takeoff)?","Copiloto",["Comandante","PF","Ninguém, é silencioso"],"SOP B.1 e tabelas 2.1.5 a 2.1.14: no solo o copiloto lê e o comandante responde. Em voo, quem lê é o PM.","Checklist"],
+ ["O After Landing Checklist é:","Silencioso, feito pelo COP",["Lido pelo PM em voz alta","Lido pelo CMD","Desafio-resposta"],"SOP 2.10.1: o After Landing é um “silent checklist” feito pelo copiloto. O Securing é feito em silêncio pelo CMD (read & done).","Checklist"],
+ ["Na regra do SOP, quando o item diz AS RQRD você fala:","A posição real do item",["“AS REQUIRED”","“CHECKED”","Nada"],"SOP B.1: no AS RQRD, verbalize o status do item (ex.: “BYPASS”), nunca “as required”. Onde há “____”, fale o valor real.","Checklist"],
+ ["Janela de estabilização em aproximação IFR:","1000 ft AFE",["500 ft AFE","1500 ft AFE","200 ft AFE"],"SOP 2.6.3: 1000 ft AFE em procedimento IFR e 500 ft AFE em circuito visual e circling. Se não estiver estabilizado: “NOT STABLE, GO AROUND”.","Aproximação"],
+ ["Razão de descida máxima na aproximação estabilizada:","1000 ft/min",["500 ft/min","1500 ft/min","800 ft/min"],"Critério do SOP 2.6.3: razão de descida até 1000 ft/min. 500 ft/min é a descida padrão de cruzeiro e 800 ft/min é a descida econômica.","Aproximação"],
+ ["Razão de descida padrão da VOARE:","500 ft/min",["800 ft/min","1000 ft/min","300 ft/min"],"SOP 2.5.3: descida padrão a 500 ft/min, mantendo 140–160 KIAS. 800 ft/min é a descida econômica, sem passageiros.","Limites"],
+ ["Na arremetida com flap FULL, o PM coloca:","Flap 20",["Flap UP","Flap 10","Mantém FULL"],"SOP 2.8: com “GO AROUND, FLAPS”, o flap FULL vai para 20 (no EX, LAND vai para TO/APR). Com flap UP, 10 ou 20, o PM não mexe.","Arremetida"],
+ ["Planeio após corte do motor no SOP VOARE:","85 KIAS",["95 KIAS","78 KIAS","110 KIAS"],"Os fluxos do SOP 4.2.2 e 4.7.2 usam 85 KIAS. O cartão de memória do POH usa 95 KIAS: no check da VOARE, siga o SOP. 78 KIAS é o Vx.","Memory items"],
+ ["Pouso forçado sem motor: velocidade final","80 KIAS com flap FULL",["95 KIAS flap UP","70 KIAS flap 20","100 KIAS flap 10"],"SOP 4.13.1: airspeed 80 KIAS com flaps FULL. Com motor (4.13.2): 90 KIAS com flap 10 para sobrevoar e depois 80 KIAS com flap FULL.","Memory items"],
+ ["Tempo máximo de reverso:","1 min",["30 s","2 min","5 min"],"SOP 2.7.5: reverso por até 1 minuto, seguido de 1 minuto em idle para resfriar. A VOARE prefere freio e beta.","Limites"],
+ ["Antes de cortar o motor, quanto tempo em idle?","1 min",["30 s","3 min","Nenhum"],"SOP 2.11: aguardar 1 minuto de cooldown em idle antes do corte. Pode começar a contar durante o táxi.","Limites"],
+ ["Ciclo de partida com bateria:","30 s on / 60 s off",["20 s on / 120 s off","60 s on / 30 s off","10 s on / 60 s off"],"Com bateria: 30 s on / 60 s off, 30 s on / 60 s off, 30 s on / 30 min off. O ciclo de 20 s on / 120 s off é com fonte externa.","Partida"],
+ ["Teste do overspeed governor: RPM esperada","1750 ± 60",["1900 ± 30","1600 ± 60","2090"],"SOP 1.2: 1750 ± 60 RPM. O teste é feito só no primeiro voo da tripulação naquele avião.","Limites"],
+ ["Mínimos publicados de 1.691 ft viram:","1.700 ft",["1.690 ft","1.750 ft","1.800 ft"],"SOP 2.6.4 (corrected minimums): arredonde a DA/MDA sempre para cima, até o próximo múltiplo de 10 ft. 1.691 vira 1.700.","Aproximação"],
+ ["Na decolagem rejeitada, quem fala “ABORT”?","PM",["PF","Comandante sempre","Torre"],"SOP 2.2.7: o PM avisa “ABORT”. O PF puxa a manete para reverso máximo e freia, e o PM recolhe o flap.","Decolagem"],
+ ["Callout do PM ao velocímetro começar a indicar:","SPEED ALIVE",["AIRSPEED ON","SPEED CHECKED","60 KNOTS"],"SOP 2.2.5: “SPEED ALIVE” e o PF responde “CHECKED”. Depois vêm “60 KNOTS” e “ROTATE”.","Decolagem"],
+ ["Mudança inesperada no FMA, o PM fala:","CHECK FMA",["FMA CHANGED","SET FMA","AUTOPILOT"],"SOP B.7.1: qualquer transição inesperada de modo, ou um callout que o PF esqueceu, é alertada com “CHECK FMA”.","Callouts"],
+ ["Mensagem CAS vermelha RSVR FUEL LOW: 1º item","FUEL TANK SELECTORS — BOTH ON",["FUEL BOOST — ON","IGNITION — ON","POWER LEVER — IDLE"],"E-13: primeiro garanta combustível dos dois tanques, depois IGNITION ON (contra apagamento) e FUEL BOOST ON. Cuidado: no FUEL PRESS LOW a ordem do 2º e do 3º item é trocada.","Memory items"],
+ ["Mensagem âmbar FUEL PRESS LOW: 2º item","FUEL BOOST — ON",["IGNITION — ON","FUEL TANK SELECTORS — BOTH ON","FUEL CONDITION — CUTOFF"],"E-16: SELECTORS BOTH ON, FUEL BOOST ON, IGNITION ON. No RSVR FUEL LOW a ordem é selectors, ignition, boost. Truque: pressão baixa → primeiro a bomba (boost).","Memory items"],
+ ["Fogo no motor na partida: posição do STARTER","MOTOR",["OFF","START","TRIP"],"E-10: corta o combustível, desliga o boost e deixa o starter em MOTOR. Ele gira o motor sem ignição para soprar o combustível e o fogo para fora.","Memory items"],
+ ["Pane da FCU: Ng mínimo usando a EMERGENCY POWER","65%",["50%","12%","101.6%"],"E-12: na pane da FCU a potência cai para idle. Use a EMERGENCY POWER mantendo no mínimo 65% de Ng em voo. 50% é a referência do flameout.","Memory items"],
+ ["Flameout com Ng acima de 50%:","POWER IDLE e IGNITION ON",["FUEL CONDITION CUTOFF","PROP FEATHER","BATTERY OFF"],"E-4: com Ng acima de 50%, o motor ainda gira forte e pode reacender: POWER IDLE e IGNITION ON. Abaixo de 50%: FUEL CONDITION CUTOFF e partida em voo pelo QRH.","Memory items"]
 ];
 
 </script>
@@ -1051,44 +1052,96 @@ function zone(id, ctl){
 }
 
 /* ---------- Simulado ---------- */
+// onde cada passo aparece (para explicar a opção errada)
+const STEP_WHERE = {};
+MEM.forEach(m=>m.steps.forEach((s,i)=>{ const k=s[0]+" — "+s[1]; (STEP_WHERE[k]=STEP_WHERE[k]||[]).push(`${m.id} ${m.pt} (item ${i+1})`); }));
+function seqText(m){ return m.steps.map((s,i)=>`${i+1}. ${s[0]} — ${s[1]}`).join(" · "); }
 function buildPool(){
   const pool=[];
-  const allSteps=[]; MEM.forEach(m=>m.steps.forEach(s=>allSteps.push(s[0]+" — "+s[1])));
+  const allSteps=Object.keys(STEP_WHERE);
   MEM.forEach(m=>{
     if(m.steps.length<2 || m.cond) return;
     const k=Math.floor(Math.random()*m.steps.length); const right=m.steps[k][0]+" — "+m.steps[k][1];
-    const others=shuffle([...new Set(allSteps.filter(x=>x!==right))]).slice(0,3);
-    pool.push({q:`${m.pt} (${m.en}): qual é o item ${k+1}?`, a:right, o:shuffle([right,...others])});
+    const own=shuffle(m.steps.map(s=>s[0]+" — "+s[1]).filter(x=>x!==right)).slice(0,1);
+    const others=own.concat(shuffle(allSteps.filter(x=>x!==right && !own.includes(x))).slice(0,3-own.length));
+    pool.push({q:`${m.pt} (${m.en}): qual é o item ${k+1}?`, a:right, o:shuffle([right,...others]), t:"Memory items", mem:m.id,
+      exp:`A sequência completa é: ${seqText(m)}. ${m.why}`,
+      wp:p=>{ const own=m.steps.findIndex(s=>s[0]+" — "+s[1]===p); if(own>=0) return `Esse passo é deste mesmo procedimento, mas é o item ${own+1}, não o ${k+1}. A ordem importa.`; const w=STEP_WHERE[p]; return w?`Esse passo pertence a outro procedimento: ${w.slice(0,2).join("; ")}.`:""; }});
   });
   MEM.filter(m=>m.cas).forEach(m=>{
     const right=m.pt; const others=shuffle(MEM.filter(x=>x!==m).map(x=>x.pt)).slice(0,3);
-    pool.push({q:`Apareceu a mensagem CAS ${m.cas[1]}. Qual procedimento?`, a:right, o:shuffle([right,...others])});
+    pool.push({q:`Apareceu a mensagem CAS ${m.cas[1]} (${m.cas[0]==="r"?"vermelha":"âmbar"}). Qual procedimento?`, a:right, o:shuffle([right,...others]), t:"Memory items", mem:m.id,
+      exp:`${m.cas[1]} aciona o ${m.id} ${m.en}: ${seqText(m)}.`,
+      wp:p=>{ const o=MEM.find(x=>x.pt===p); return o?`“${o.pt}” é o ${o.id}${o.cas?`, que aparece com a mensagem ${o.cas[1]}`:", que não tem mensagem CAS própria"}.`:""; }});
   });
-  QX.forEach(x=>pool.push({q:x[0], a:x[1], o:shuffle([x[1],...x[2]])}));
+  QX.forEach(x=>pool.push({q:x[0], a:x[1], o:shuffle([x[1],...x[2]]), exp:x[3], t:x[4]}));
   return shuffle(pool).slice(0,10);
 }
+const fmtDate = ts => { const d=new Date(ts); return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit"})+" "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"}); };
+const scoreColor = s => s>=9?"var(--green)":s>=7?"var(--amber)":"var(--red)";
 function rQuiz(){
-  main.innerHTML = `<h2>Simulado</h2><p class="lead">10 perguntas sorteadas de memory items, checklist, callouts e limites. Cada rodada é diferente.</p>
-   <p>Melhor resultado: <b style="font-family:var(--f-mono)">${store.get("best",0)}/10</b></p><button class="btn pri" id="qs">Começar</button>`;
-  $("#qs").onclick=()=>quiz(buildPool(),0,0,[]);
+  const hist = store.get("hist",[]);
+  const n=hist.length, avg=n?(hist.reduce((a,h)=>a+h.s,0)/n):0, best=n?Math.max(...hist.map(h=>h.s)):0, last=n?hist[n-1].s:0;
+  const rank = hist.map((h,i)=>({...h,i})).sort((a,b)=>b.s-a.s||b.d-a.d).slice(0,10);
+  const topic={}; hist.forEach(h=>Object.entries(h.tp||{}).forEach(([t,[r,tot]])=>{ topic[t]=topic[t]||[0,0]; topic[t][0]+=r; topic[t][1]+=tot; }));
+  const topics=Object.entries(topic).map(([t,[r,tot]])=>({t,pct:r/tot,r,tot})).sort((a,b)=>a.pct-b.pct);
+  const recent=hist.slice(-15);
+  main.innerHTML = `<h2>Simulado</h2><p class="lead">10 perguntas sorteadas. Depois de cada resposta aparece a explicação, e no fim um resumo dos erros. Tudo fica salvo neste celular.</p>
+   <button class="btn pri" id="qs" style="padding:14px 20px;font-size:15px">Começar nova prova</button>
+   ${n?`
+   <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-top:18px">
+    ${[["Provas feitas",n],["Média",avg.toFixed(1)],["Melhor",best+"/10"],["Última",last+"/10"]].map(([l,v])=>`<div class="box" style="padding:12px"><div class="lbl" style="font:700 11px var(--f-disp);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">${l}</div><div style="font:700 26px var(--f-mono);margin-top:4px">${v}</div></div>`).join("")}
+   </div>
+   <div class="box" style="margin-top:12px"><h3>Evolução (últimas ${recent.length})</h3>
+    <div style="display:flex;align-items:flex-end;gap:4px;height:90px;margin-top:10px;border-bottom:1px solid var(--line)" role="img" aria-label="Notas das últimas provas">
+     ${recent.map(h=>`<div title="${h.s}/10 · ${fmtDate(h.d)}" style="flex:1;max-width:28px;height:${Math.max(4,h.s*10)}%;background:${scoreColor(h.s)};border-radius:3px 3px 0 0"></div>`).join("")}
+    </div><div class="ptx" style="font-size:12px;margin-top:4px">Verde 9–10 · âmbar 7–8 · vermelho abaixo de 7</div></div>
+   <div class="box" style="margin-top:12px"><h3>Ranking das suas provas</h3><div class="tbl"><table>
+    <tr><th>#</th><th>Nota</th><th>Data</th><th>Prova</th></tr>
+    ${rank.map((h,p)=>`<tr><td style="font:700 14px var(--f-mono)">${p+1}º</td><td style="font:700 15px var(--f-mono);color:${scoreColor(h.s)}">${h.s}/10</td><td>${fmtDate(h.d)}</td><td class="ptx">nº ${h.i+1}</td></tr>`).join("")}
+   </table></div></div>
+   ${topics.length?`<div class="box" style="margin-top:12px"><h3>Acertos por assunto</h3><div class="stack" style="gap:8px;margin-top:6px">
+    ${topics.map(x=>`<div><div style="display:flex;justify-content:space-between;gap:8px;font-size:14px"><span>${esc(x.t)}</span><span style="font-family:var(--f-mono)">${Math.round(x.pct*100)}% (${x.r}/${x.tot})</span></div><div style="height:8px;background:var(--surface-2);border-radius:4px;overflow:hidden"><i style="display:block;height:100%;width:${x.pct*100}%;background:${x.pct>=.9?"var(--green)":x.pct>=.7?"var(--amber)":"var(--red)"}"></i></div></div>`).join("")}
+    </div><p class="ptx" style="margin:10px 0 0">O assunto de cima é o que você mais erra. Comece a revisão por ele.</p></div>`:""}
+   <div class="box" style="margin-top:12px"><h3>Histórico</h3>
+    ${hist.slice().reverse().map((h,j)=>`<details style="border-top:1px solid var(--line);padding:8px 0"><summary style="cursor:pointer;display:flex;gap:10px;align-items:center"><b style="font-family:var(--f-mono);color:${scoreColor(h.s)}">${h.s}/10</b><span>Prova nº ${n-j}</span><span class="ptx">${fmtDate(h.d)}</span></summary>
+     ${(h.w||[]).length?h.w.map(w=>errCard(w)).join(""):`<p class="ptx">Sem erros.</p>`}</details>`).join("")}
+    <div id="clr" style="margin-top:10px"><button class="link" id="clr1">Apagar histórico</button></div></div>`:`<p class="ptx" style="margin-top:14px">Faça a primeira prova para começar o ranking.</p>`}`;
+  $("#qs").onclick=()=>quiz(buildPool(),0,0,[],{});
+  const c1=$("#clr1"); if(c1) c1.onclick=()=>{ $("#clr").innerHTML=`<span class="ptx">Apagar todas as ${n} provas?</span> <button class="btn sm" id="clrY">Sim, apagar</button> <button class="btn sm" id="clrN">Cancelar</button>`; $("#clrY").onclick=()=>{store.set("hist",[]);rQuiz();}; $("#clrN").onclick=rQuiz; };
 }
-function quiz(qs,i,score,wrong){
+function errCard(w){
+  return `<div style="border-left:3px solid var(--red);padding:8px 10px;margin:8px 0;background:var(--surface-2);border-radius:0 8px 8px 0">
+   <div style="font-weight:600">${esc(w.q)}</div>
+   <div style="font-size:14px;margin-top:4px">Você marcou: <b style="color:var(--red)">${esc(w.p)}</b></div>
+   <div style="font-size:14px">Certo: <b style="color:var(--green)">${esc(w.a)}</b></div>
+   ${w.wp?`<div class="ptx" style="font-size:14px;margin-top:4px">${esc(w.wp)}</div>`:""}
+   <div style="font-size:14px;margin-top:4px">${esc(w.exp||"")}</div>
+   ${w.mem?`<button class="link" data-rev="${w.mem}" style="margin-top:4px">Revisar ${w.mem} →</button>`:""}</div>`;
+}
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-rev]"); if(b){ go("mem"); memDetail(b.dataset.rev); } });
+function quiz(qs,i,score,wrong,tp){
   if(i>=qs.length){
-    const best=Math.max(store.get("best",0),score); store.set("best",best);
-    main.innerHTML = `<h2>Resultado</h2><div class="score">${score}/10</div><p class="lead" style="margin-top:8px">${score>=9?"Pronto para o check nesses tópicos.":score>=7?"Quase. Revise os erros abaixo.":"Volte aos memory items e ao checklist e tente de novo."}</p>
-      ${wrong.length?`<div class="box"><h3>Revisar</h3><ul class="flags">${wrong.map(w=>`<li>${esc(w.q)}<br><b class="act">${esc(w.a)}</b></li>`).join("")}</ul></div>`:""}
-      <div class="toolbar" style="margin-top:14px"><button class="btn pri" id="qa">Nova rodada</button></div>`;
-    $("#qa").onclick=()=>quiz(buildPool(),0,0,[]); return;
+    const hist=store.get("hist",[]); hist.push({d:Date.now(), s:score, w:wrong, tp}); store.set("hist",hist.slice(-100));
+    const pos=hist.slice().sort((a,b)=>b.s-a.s||b.d-a.d).findIndex(h=>h.d===hist[hist.length-1].d)+1;
+    main.innerHTML = `<h2>Resultado</h2><div class="score">${score}/10</div>
+      <p class="lead" style="margin-top:8px">${pos}º lugar entre suas ${hist.length} provas. ${score>=9?"Pronto para o check nesses tópicos.":score>=7?"Quase. Leia o resumo dos erros.":"Leia o resumo dos erros, revise e tente de novo."}</p>
+      ${wrong.length?`<div class="box"><h3>Resumo dos erros</h3>${wrong.map(errCard).join("")}</div>`:`<p class="note ok">Nenhum erro nesta prova.</p>`}
+      <div class="toolbar" style="margin-top:14px"><button class="btn pri" id="qa">Nova prova</button><button class="btn" id="qh">Ver ranking e histórico</button></div>`;
+    $("#qa").onclick=()=>quiz(buildPool(),0,0,[],{}); $("#qh").onclick=rQuiz; window.scrollTo({top:0}); return;
   }
   const q=qs[i];
-  main.innerHTML = `<p class="prog" style="font:700 13px var(--f-mono);color:var(--muted)">Pergunta ${i+1}/10 · acertos ${score}</p><h2 style="margin-bottom:14px">${esc(q.q)}</h2>
+  main.innerHTML = `<p class="prog" style="font:700 13px var(--f-mono);color:var(--muted)">Pergunta ${i+1}/10 · acertos ${score} · ${esc(q.t)}</p><h2 style="margin-bottom:14px">${esc(q.q)}</h2>
    <div class="opts">${q.o.map(o=>`<button data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div><div id="qn" style="margin-top:14px"></div>`;
   main.querySelectorAll("[data-o]").forEach(b=>b.onclick=()=>{
-    const ok=b.dataset.o===q.a;
+    const p=b.dataset.o, ok=p===q.a;
     main.querySelectorAll("[data-o]").forEach(x=>{ x.disabled=true; if(x.dataset.o===q.a) x.classList.add("right"); });
-    if(!ok){ b.classList.add("wrong"); wrong.push(q); }
-    $("#qn").innerHTML=`<button class="btn pri" id="qnext">${i<9?"Próxima":"Ver resultado"}</button>`;
-    $("#qnext").onclick=()=>quiz(qs,i+1,score+(ok?1:0),wrong);
+    tp[q.t]=tp[q.t]||[0,0]; tp[q.t][1]++; if(ok) tp[q.t][0]++;
+    const wp = !ok && q.wp ? q.wp(p) : "";
+    if(!ok){ b.classList.add("wrong"); wrong.push({q:q.q,a:q.a,p,exp:q.exp,wp,mem:q.mem||""}); }
+    $("#qn").innerHTML=`<div class="note ${ok?"ok":"red"}"><b>${ok?"Certo.":"Errado. O certo é: "+esc(q.a)}</b>${wp?`<div style="margin-top:4px">${esc(wp)}</div>`:""}<div style="margin-top:4px">${esc(q.exp)}</div></div>
+     <div class="toolbar" style="margin-top:12px"><button class="btn pri" id="qnext">${i<9?"Próxima":"Ver resultado"}</button></div>`;
+    $("#qnext").onclick=()=>quiz(qs,i+1,score+(ok?1:0),wrong,tp);
   });
 }
 
