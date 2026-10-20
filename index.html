@@ -873,6 +873,11 @@ const CKL = [
 
 // Callouts do SOP
 const CALL = [
+ {t:"Circuito de tráfego visual", s:"2.6.5", note:"Detalhes na aba Circuito.", rows:[
+  ["PF","FLAP 10","Través da cabeceira, PM já disparou o cronômetro (EX: FLAP APR)"],["PM","SPEED CHECKED, FLAPS 10","Velocidade conferida, flap 10"],
+  ["PF","FLAP 20","Fim do tempo, entrando na base"],["PF","HÉLICE A FRENTE","Em português no SOP: hélice toda à frente"],
+  ["PF","FLAP FULL","Na base: flap de pouso e Vapp"],["PF","LANDING CHECKLIST","Pede o checklist de pouso"],
+  ["PM","STABLE","500 ft AFE: estabilizado"],["PM","NOT STABLE, GO AROUND","500 ft AFE: não estabilizado, arremeter"]]},
  {t:"Transferência de controles", s:"B.4 / 2.10", rows:[
   ["CMD","YOUR CONTROLS AND ATC","Seus controles e o rádio"],["COP","MY CONTROLS AND ATC","Meus controles e o rádio"],
   ["CMD","YOUR CONTROLS, MY ATC","Seus controles, o rádio fica comigo"],["COP","MY CONTROLS, YOUR ATC","Meus controles, o rádio é seu"],
@@ -935,6 +940,41 @@ const CALL = [
 ];
 
 // Limitações
+
+// Circuito de tráfego visual (SOP 2.6.5 + figura pág. 77) e circular (SOP 2.6.10)
+const CIRC = {
+ pts:[
+  {n:1, t:"Ingresso no circuito", where:"Entrar na perna do vento a 45°", alt:"1000 ft AFE (ou a altitude da VAC)", spd:"120 kt", cfg:"Flap UP",
+   calls:[], note:"O Approach Checklist já foi feito na descida (altímetro no QNH, farol de táxi ON, seletores BOTH)."},
+  {n:2, t:"Perna do vento", where:"Paralelo à pista, no sentido contrário ao pouso", alt:"1000 ft AFE", spd:"120 kt", cfg:"Flap UP",
+   calls:[], note:"O SOP não fixa uma distância em milhas da pista. Mantenha o afastamento da carta VAC ou do circuito publicado."},
+  {n:3, t:"Través da cabeceira de pouso", where:"Quando a cabeceira de pouso passa ao seu lado", alt:"1000 ft AFE", spd:"Reduzir abaixo de 100 kt", cfg:"Flap 10 (C208B) ou APR (EX)",
+   calls:[["PM","(dispara o cronômetro)","PM começa a contar o tempo"],["PF","FLAP 10","PF pede flap 10. No EX: “FLAP APR”"],["PM","SPEED CHECKED, FLAPS 10","PM confere a velocidade, baixa e confirma"]],
+   note:"A figura do SOP diz “IAS > 100 kt” neste ponto e o texto diz “reduzir abaixo de 100 kt”. Confirme com o instrutor."},
+  {n:4, t:"Tempo na perna do vento", where:"Do través até virar a base", alt:"1000 ft AFE", spd:"Abaixo de 100 kt", cfg:"Flap 10 / APR",
+   calls:[], note:"30 segundos, corrigindo 1 s para cada nó de vento, até no máximo ±10 s. O SOP não diz para que lado corrigir: confirme com o instrutor."},
+  {n:5, t:"Ingresso na perna base", where:"Fim do cronômetro: curva para a base", alt:"Inicia a descida", spd:"100 kt", cfg:"Flap 20 / APR e hélice toda à frente",
+   calls:[["PF","FLAP 20","PF pede flap 20"],["PM","SPEED CHECKED, FLAPS 20","PM confere e confirma"],["PF","HÉLICE A FRENTE","Em português no SOP: PM põe a hélice toda à frente"]],
+   note:"Assim está na figura do SOP. O texto resume: na base, flap de pouso, Vapp e Landing Checklist."},
+  {n:6, t:"Perna base", where:"Perpendicular à pista", alt:"Descendo", spd:"Reduzir para Vapp (90 kt)", cfg:"Flap FULL / LAND",
+   calls:[["PF","FLAP FULL","PF pede flap de pouso"],["PM","SPEED CHECKED, FLAPS 30","PM confere e confirma (EX: LAND)"],["PF","LANDING CHECKLIST","PF pede o Landing Checklist"],["PM","LANDING CHECKLIST COMPLETED","PM fecha o checklist"]],
+   note:"Farol de pouso (landing light) liga ao entrar no segmento de aproximação final (SOP B.8)."},
+  {n:7, t:"Final — 500 ft AFE", where:"Alinhado com a pista", alt:"500 ft AFE", spd:"Vref a Vapp + 20 kt", cfg:"Configuração de pouso",
+   calls:[["PM","STABLE","Estabilizado: continua o pouso"],["PM","NOT STABLE, GO AROUND","Não estabilizado: arremeter"]],
+   note:"Cruzar a cabeceira a 50 ft, entre Vref e Vref + 10 kt, e tocar na zona de toque ou no primeiro terço da pista."}
+ ],
+ stab:[["Janela de estabilização (visual e circling)","500 ft AFE"],["Velocidade na aproximação","Vref a Vapp + 20 kt"],["Velocidade na cabeceira","Vref a Vref + 10 kt"],["Altura na cabeceira","50 ft"],["Potência","acima de 300 lb de torque"],["Razão de descida","até 1000 ft/min"],["Configuração","flap de pouso e Landing Checklist completo"]],
+ circling:[
+  ["PF","FLAPS 10","PM baixa e confirma “FLAPS 10”. Velocidade 110 kt."],
+  ["PF","LANDING CHECKLIST","Feito até o flap. O flap fica aguardando 20°/30°. PM fecha: “LANDING CHECKLIST COMPLETED”."],
+  ["PF","HEADING BUG ± 45","PM coloca o heading bug 45° para fora da pista e confirma (o SOP escreve “HDG BUG +/- 45°”)."],
+  ["PF","TEMPO","PM dispara o cronômetro e, após 30 s, avisa “TEMPO”. É a perna de afastamento."],
+  ["PF","TEMPO","No través da cabeceira em uso, PF pede de novo. PM avisa “TEMPO” após 30 s."],
+  ["PF","FLAPS 20","Após os 30 s, vira a base. PM baixa e confirma “FLAPS 20”."],
+  ["PF","HÉLICE MÁXIMA","PM põe a hélice toda à frente e confirma “HÉLICE MÁXIMA”."],
+  ["PF","FLAPS 30","Na final. PM baixa e confirma “FLAPS 30”."]
+ ]
+};
 const LIM = [
  {t:"Velocidades VOARE", rows:[
   ["Rotação (Vr)","80 KIAS"],["Subida inicial","90 KIAS"],["Flap 10 (após 400 ft)","≥ 90 KIAS"],["Flap UP","≥ 95 KIAS"],
@@ -1066,7 +1106,19 @@ const QX = [
  ["Mensagem âmbar FUEL PRESS LOW: 2º item","FUEL BOOST — ON",["IGNITION — ON","FUEL TANK SELECTORS — BOTH ON","FUEL CONDITION — CUTOFF"],"E-16: SELECTORS BOTH ON, FUEL BOOST ON, IGNITION ON. No RSVR FUEL LOW a ordem é selectors, ignition, boost. Truque: pressão baixa → primeiro a bomba (boost).","Memory items"],
  ["Fogo no motor na partida: posição do STARTER","MOTOR",["OFF","START","TRIP"],"E-10: corta o combustível, desliga o boost e deixa o starter em MOTOR. Ele gira o motor sem ignição para soprar o combustível e o fogo para fora.","Memory items"],
  ["Pane da FCU: Ng mínimo usando a EMERGENCY POWER","65%",["50%","12%","101.6%"],"E-12: na pane da FCU a potência cai para idle. Use a EMERGENCY POWER mantendo no mínimo 65% de Ng em voo. 50% é a referência do flameout.","Memory items"],
- ["Flameout com Ng acima de 50%:","POWER IDLE e IGNITION ON",["FUEL CONDITION CUTOFF","PROP FEATHER","BATTERY OFF"],"E-4: com Ng acima de 50%, o motor ainda gira forte e pode reacender: POWER IDLE e IGNITION ON. Abaixo de 50%: FUEL CONDITION CUTOFF e partida em voo pelo QRH.","Memory items"]
+ ["Flameout com Ng acima de 50%:","POWER IDLE e IGNITION ON",["FUEL CONDITION CUTOFF","PROP FEATHER","BATTERY OFF"],"E-4: com Ng acima de 50%, o motor ainda gira forte e pode reacender: POWER IDLE e IGNITION ON. Abaixo de 50%: FUEL CONDITION CUTOFF e partida em voo pelo QRH.","Memory items"],
+ ["Altura do circuito de tráfego visual (VOARE):","1000 ft AFE (ou a altitude da VAC)",["500 ft AFE","1500 ft AFE","800 ft AFE"],"SOP 2.6.5: entrar na perna do vento a 1000 ft acima da elevação do campo, ou na altitude prevista na VAC.","Circuito"],
+ ["Velocidade para entrar no circuito:","120 kt",["100 kt","110 kt","140 kt"],"SOP 2.6.5 e figura da pág. 77: ingresso no circuito com 120 kt. No través reduz para baixo de 100 kt.","Circuito"],
+ ["Ângulo de ingresso na perna do vento:","45°",["90°","30°","Direto, alinhado"],"Figura do SOP pág. 77: o ingresso na perna do vento é feito a 45°.","Circuito"],
+ ["No través da cabeceira de pouso, o que acontece?","PM dispara o cronômetro e o PF pede flap 10 (EX: APR)",["PF pede flap FULL e Landing Checklist","PM fala “STABLE”","Nada, só na base"],"SOP 2.6.5: no través, o PM dispara o cronômetro e o PF pede flap 10 (C208B) ou APR (EX) e reduz para baixo de 100 kt.","Circuito"],
+ ["Quanto tempo do través até virar a base?","30 s, com 1 s por nó de vento (máx. ±10 s)",["60 s fixos","15 s","45 s, sem correção"],"Figura do SOP pág. 77: 30 s ± 1 s por kt de vento, com correção máxima de ±10 s.","Circuito"],
+ ["Na figura do SOP, ao entrar na perna base:","Flap 20 e hélice toda à frente",["Flap UP e 120 kt","Flap 10 e Landing Checklist","Flap FULL e reverso"],"Figura do SOP pág. 77: ingresso na base com flaps 20 e propeller full forward. Na base: flap FULL/LAND, Vapp e “LANDING CHECKLIST”.","Circuito"],
+ ["Janela de estabilização no circuito visual:","500 ft AFE",["1000 ft AFE","300 ft AFE","200 ft AFE"],"SOP 2.6.3: 500 ft AFE no circuito visual e no circling. Em procedimento IFR, 1000 ft. O PM fala “STABLE” ou “NOT STABLE, GO AROUND”.","Circuito"],
+ ["Velocidade e flap para começar o circling:","110 kt com flap 10",["120 kt flap UP","90 kt flap FULL","100 kt flap 20"],"SOP 2.6.10: PF pede FLAPS 10 e mantém 110 kt. Depois pede o Landing Checklist, ficando o flap aguardando 20°/30°.","Circuito"],
+ ["No circling, quanto o heading bug é deslocado?","45°",["90°","30°","180°"],"SOP 2.6.10: PF pede “HDG BUG +/- 45°” para o afastamento, e depois “TEMPO” (30 s).","Circuito"],
+ ["Altura de cruzamento da cabeceira:","50 ft",["100 ft","20 ft","0 ft (já tocando)"],"SOP 2.7.2: as distâncias de pouso do POH consideram 50 ft na cabeceira. Evite cruzar abaixo disso.","Circuito"],
+ ["Vapp padrão na final:","90 kt",["80 kt","100 kt","110 kt"],"SOP 2.6.8: Vapp de 90 kt com flap 30/LAND na aproximação final.","Circuito"]
+
 ];
 
 </script>
@@ -1162,7 +1214,7 @@ const playBtn = (txt, label) => `<button class="icon" data-say="${esc(txt)}" ari
 document.addEventListener("click", e=>{ const b=e.target.closest("[data-say]"); if(b){ say(b.dataset.say); } });
 
 /* ---------- abas ---------- */
-const TABS = [["inicio","Início"],["mem","Memory items"],["ckl","Checklist"],["call","Callouts"],["lim","Limites"],["pan","Painel"],["quiz","Simulado"]];
+const TABS = [["inicio","Início"],["mem","Memory items"],["ckl","Checklist"],["call","Callouts"],["circ","Circuito"],["lim","Limites"],["pan","Painel"],["quiz","Simulado"]];
 let tab = store.get("tab","inicio"); if(!TABS.some(t=>t[0]===tab)) tab="inicio";
 const tabsEl = $("#tabs");
 tabsEl.innerHTML = TABS.map(([k,l])=>`<button role="tab" id="t-${k}" data-tab="${k}" aria-selected="${k===tab}">${l}</button>`).join("");
@@ -1171,7 +1223,7 @@ function go(k, arg){
   tab=k; store.set("tab",k);
   tabsEl.querySelectorAll("button").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===k));
   if(hasTTS) speechSynthesis.cancel();
-  ({inicio:rInicio, mem:rMem, ckl:rCkl, call:rCall, lim:rLim, pan:rPan, quiz:rQuiz})[k](arg);
+  ({inicio:rInicio, mem:rMem, ckl:rCkl, call:rCall, circ:rCirc, lim:rLim, pan:rPan, quiz:rQuiz})[k](arg);
   window.scrollTo({top:0});
 }
 const main = $("#main");
@@ -1378,6 +1430,53 @@ function rCall(){
      ${c.rows.map(r=>`<div class="callrow"><span class="chip role ${r[0]}">${r[0]}</span><div style="min-width:0"><div class="say">${esc(r[1])}</div><div class="pron">${esc(pron(r[1]))}</div><div class="ptx">${esc(r[2])}</div></div>${playBtn(r[1])}</div>`).join("")}</section>`).join("")}</div>`;
   main.querySelectorAll("[data-cd]").forEach(b=>b.onclick=()=>{ const c=CALL[+b.dataset.cd];
     runDrill(c.t, c.rows.map(r=>({who:r[0], askLbl:"Situação", ask:r[2], hint:"Fale o callout em inglês.", btn:"Ver o callout", ansLbl:`${r[0]} fala`, ans:r[1], ansPr:pron(r[1]), ansSay:r[1]}))); });
+}
+
+/* ---------- Circuito de tráfego ---------- */
+function circSVG(){
+  const pt=(x,y,n)=>`<g><circle cx="${x}" cy="${y}" r="18" fill="var(--accent)"/><text x="${x}" y="${y+7}" text-anchor="middle" style="font:700 19px var(--f-mono);fill:var(--accent-ink)">${n}</text></g>`;
+  const lab=(x,y,t,a)=>`<text x="${x}" y="${y}" text-anchor="${a||"middle"}" style="font:700 19px var(--f-disp);fill:var(--ink-2)">${t}</text>`;
+  return `<svg viewBox="0 0 720 360" overflow="visible" style="width:100%;height:auto;display:block" role="img" aria-label="Esquema do circuito de tráfego visual">
+   <rect x="250" y="292" width="300" height="26" rx="4" fill="var(--muted)"/>
+   ${[0,1,2,3,4,5,6,7].map(i=>`<rect x="${268+i*36}" y="303" width="20" height="4" fill="#e9edf0"/>`).join("")}
+   ${lab(400,348,"PISTA · pouso →")}
+   <path d="M690 30 L600 80" stroke="var(--muted)" stroke-width="3" stroke-dasharray="8 6" fill="none"/>
+   <path d="M600 80 L120 80 Q70 80 70 130 L70 250 Q70 305 125 305 L250 305" stroke="var(--accent)" stroke-width="4" fill="none" stroke-linejoin="round"/>
+   <path d="M560 80 L545 72 L545 88 Z" fill="var(--accent)" transform="rotate(180 552 80)"/>
+   <line x1="250" y1="80" x2="250" y2="292" stroke="var(--line-strong)" stroke-dasharray="4 5"/>
+   ${lab(262,200,"través da cabeceira","start")}
+   <line x1="250" y1="48" x2="120" y2="48" stroke="var(--mag)" stroke-width="2"/>
+   ${lab(185,36,"30 s ± 1 s/kt")}
+   ${lab(650,26,"45°")}
+   ${lab(430,62,"PERNA DO VENTO · 1000 ft · 120 kt")}
+   ${lab(30,190,"BASE","middle")}
+   ${lab(160,340,"FINAL")}
+   ${pt(600,80,1)}${pt(420,108,2)}${pt(250,80,3)}${pt(170,108,4)}${pt(90,90,5)}${pt(70,200,6)}${pt(190,305,7)}
+  </svg>`;
+}
+function rCirc(){
+  const C=CIRC;
+  main.innerHTML = `<h2>Circuito de tráfego</h2>
+   <p class="lead">Circuito visual da VOARE (SOP 2.6.5) e procedimento para circular (2.6.10). O número no desenho corresponde ao número de cada ponto abaixo.</p>
+   <div class="box" style="padding:10px">${circSVG()}</div>
+   <div class="toolbar" style="margin:4px 0 14px"><button class="btn pri" id="cdr">Treinar o circuito</button><button class="btn" id="ccr">Treinar o circling</button></div>
+   <div class="stack">${C.pts.map(p=>`<section class="phase"><header><span class="chip" style="background:var(--accent);color:var(--accent-ink);min-width:26px;justify-content:center">${p.n}</span><div class="ttl"><b>${esc(p.t)}</b><span>${esc(p.where)}</span></div></header>
+     <div class="tbl" style="padding:4px 12px"><table>
+      <tr><td>Altura</td><td class="v">${esc(p.alt)}</td></tr><tr><td>Velocidade</td><td class="v">${esc(p.spd)}</td></tr><tr><td>Configuração</td><td class="v">${esc(p.cfg)}</td></tr></table></div>
+     ${p.calls.map(r=>`<div class="callrow"><span class="chip role ${r[0]}">${r[0]}</span><div style="min-width:0"><div class="say">${esc(r[1])}</div>${/^\(/.test(r[1])?"":`<div class="pron">${esc(pron(r[1]))}</div>`}<div class="ptx">${esc(r[2])}</div></div>${/^\(|HÉLICE/.test(r[1])?"<span></span>":playBtn(r[1])}</div>`).join("")}
+     ${p.note?`<div style="padding:0 12px 12px"><p class="note" style="margin:6px 0 0">${esc(p.note)}</p></div>`:""}</section>`).join("")}
+   </div>
+   <div class="box" style="margin-top:14px"><h3>Aproximação estabilizada no visual</h3><div class="tbl"><table>${C.stab.map(r=>`<tr><td>${esc(r[0])}</td><td class="v">${esc(r[1])}</td></tr>`).join("")}</table></div>
+    <p class="ptx" style="margin:10px 0 0">Não estabilizado a 500 ft, ou toque além da zona de toque: arremetida obrigatória (SOP 2.7.6).</p></div>
+   <section class="phase" style="margin-top:14px"><header><div class="ttl"><b>Procedimento para circular (circling)</b><span>SOP 2.6.10 · janela de estabilização 500 ft AFE</span></div></header>
+    ${C.circling.map((r,i)=>`<div class="callrow"><span class="chip role ${r[0]}">${i+1}</span><div style="min-width:0"><div class="say">PF: “${esc(r[1])}”</div><div class="ptx">${esc(r[2])}</div></div>${/TEMPO|HÉLICE/.test(r[1])?"<span></span>":playBtn(r[1])}</div>`).join("")}
+    <div style="padding:0 12px 12px"><p class="note" style="margin:6px 0 0">“TEMPO” e “HÉLICE MÁXIMA” estão em português no SOP. Fale assim, a não ser que o instrutor peça diferente.</p></div></section>`;
+  $("#cdr").onclick=()=>{ const cards=[];
+    C.pts.forEach(p=>{ cards.push({askLbl:`Ponto ${p.n}`, ask:p.t, hint:"Qual altura, velocidade e configuração?", btn:"Ver", ansLbl:"Resposta", ans:`${p.alt} · ${p.spd} · ${p.cfg}`});
+      p.calls.filter(r=>!/^\(/.test(r[1])).forEach(r=>cards.push({who:r[0], askLbl:`Ponto ${p.n} · ${p.t}`, ask:r[2], hint:"O que se fala?", btn:"Ver o callout", ansLbl:`${r[0]} fala`, ans:r[1], ansPr:pron(r[1]), ansSay:/HÉLICE/.test(r[1])?"":r[1]})); });
+    runDrill("Circuito", cards); };
+  const SIT=["Início do circling: configurar o avião","Avião configurado, falta só o flap final","Pronto para afastar da pista","Afastando: começar a contar","Través da cabeceira em uso","Fim dos 30 s: virar a base","Na base, ainda na base","Alinhado na final"];
+  $("#ccr").onclick=()=>runDrill("Circling", C.circling.map((r,i)=>({who:"PF", askLbl:`Passo ${i+1} de ${C.circling.length}`, ask:SIT[i], hint:"O que o PF pede?", btn:"Ver", ansLbl:"PF fala", ans:r[1], ansSay:/TEMPO|HÉLICE/.test(r[1])?"":r[1], ansPt:r[2]})));
 }
 
 /* ---------- Limites ---------- */
