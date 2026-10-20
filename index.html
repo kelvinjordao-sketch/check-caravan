@@ -474,6 +474,8 @@ h3{font:700 15.5px/1.3 var(--f-disp);letter-spacing:.005em;text-wrap:balance}
 .hz .z{fill:var(--panel);stroke:var(--panel-line);stroke-width:2;transition:stroke .15s, stroke-width .15s}
 .hz:hover .z,.hz.on .z{stroke:var(--accent);stroke-width:4}
 .hz text,.svgt{fill:var(--panel-ink);font:700 15px var(--f-disp);pointer-events:none}
+.hz text{pointer-events:none}.hz .z{fill:#3c4248}.panelsvg{background:#2b3036}
+.dsvg{max-height:72vh;margin-inline:auto}.dc{cursor:pointer}.dc .bd circle{transition:fill .15s}.dc.on .bd circle,.dc:hover .bd circle{fill:var(--amber)}.ctl{cursor:pointer}
 .ctl{padding:12px 0;border-top:1px solid var(--line)}
 .ctl:first-child{border-top:0}
 .ctl>div:first-child{display:flex;gap:10px;align-items:center;justify-content:space-between}
@@ -1489,40 +1491,156 @@ function rLim(){
 }
 
 /* ---------- Painel ---------- */
+const K={bg:"#474d54",plate:"#363b41",dark:"#1d2125",bez:"#121518",line:"#626b73",w:"#eef1f3",lbl:"#e9edf0",dim:"#aab3bb",red:"#c8302c",red2:"#8f1f1c",amber:"#e6a21a",green:"#3f9b52",blue:"#2a74b8",sky:"#3b8fd6",gnd:"#8a6332",mag:"#e04ad0",scr:"#05080b"};
+const tx=(x,y,t,o={})=>{ const sz=o.s||18, lines=String(t).split("\n"); return `<text x="${x}" y="${y}" text-anchor="${o.a||"middle"}" style="font:${o.w||700} ${sz}px var(--f-disp);fill:${o.c||K.lbl};letter-spacing:.02em">${lines.map((l,i)=>`<tspan x="${x}" dy="${i?sz*1.1:0}">${esc(l)}</tspan>`).join("")}</text>`; };
+const screw=(x,y)=>`<circle cx="${x}" cy="${y}" r="4" fill="${K.line}"/><line x1="${x-3}" y1="${y}" x2="${x+3}" y2="${y}" stroke="${K.dark}" stroke-width="1.5"/>`;
+const tog=(x,y,c=K.w,dn)=>`<circle cx="${x}" cy="${y}" r="15" fill="#8d959c" stroke="${K.dark}" stroke-width="2"/><circle cx="${x}" cy="${y}" r="9" fill="#5d646b"/><rect x="${x-5}" y="${dn?y:y-34}" width="10" height="34" rx="5" fill="${c}" stroke="${K.dark}" stroke-width="1.5"/><circle cx="${x}" cy="${dn?y+34:y-34}" r="8" fill="${c}" stroke="${K.dark}" stroke-width="1.5"/>`;
+const guard=(x,y,w=34,h=64)=>`<rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="5" fill="${K.red}" stroke="${K.red2}" stroke-width="2"/><rect x="${x-w/2+5}" y="${y-h/2+5}" width="${w/3}" height="${h-10}" rx="3" fill="#ffffff" opacity=".28"/><rect x="${x-w/2}" y="${y+h/2-14}" width="${w}" height="14" fill="#fff" opacity=".18"/>`;
+const knob=(x,y,r,f=K.dark)=>`<circle cx="${x}" cy="${y}" r="${r+4}" fill="#8d959c"/><circle cx="${x}" cy="${y}" r="${r}" fill="${f}" stroke="${K.dark}" stroke-width="2"/><circle cx="${x-r/3}" cy="${y-r/3}" r="${r/3}" fill="#fff" opacity=".18"/>`;
+const pushR=(x,y,r=18)=>`<circle cx="${x}" cy="${y}" r="${r+7}" fill="#9aa2a9" stroke="${K.dark}" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${r}" fill="${K.red}"/><circle cx="${x-r/3}" cy="${y-r/3}" r="${r/2.6}" fill="#fff" opacity=".3"/>`;
+const gauge=(x,y,r,face="#0b0e11",arc=true)=>`<circle cx="${x}" cy="${y}" r="${r+6}" fill="#2b3035" stroke="#7b848c" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${r}" fill="${face}"/>${arc?`<path d="M${x-r*.75} ${y+r*.45} A${r*.85} ${r*.85} 0 1 1 ${x+r*.75} ${y+r*.45}" fill="none" stroke="#3fbf5a" stroke-width="${r*.12}"/>`:""}<line x1="${x}" y1="${y}" x2="${x+r*.5}" y2="${y-r*.55}" stroke="#fff" stroke-width="${Math.max(2,r*.08)}"/><circle cx="${x}" cy="${y}" r="${r*.1}" fill="#fff"/>`;
+const badge=(x,y,n)=>`<g class="bd"><circle cx="${x}" cy="${y}" r="15" fill="var(--accent)" stroke="${K.dark}" stroke-width="2"/><text x="${x}" y="${y+6}" text-anchor="middle" style="font:700 16px var(--f-mono);fill:var(--accent-ink)">${n}</text></g>`;
+function pfdScreen(x,y,w,h){
+  const cx=x+w/2, hy=y+h*.48;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${K.bez}"/><rect x="${x+10}" y="${y+10}" width="${w-20}" height="${h-34}" fill="${K.scr}"/>
+   <rect x="${x+10}" y="${y+10}" width="${w-20}" height="${hy-y-10}" fill="${K.sky}"/><rect x="${x+10}" y="${hy}" width="${w-20}" height="${y+h-24-hy}" fill="${K.gnd}"/>
+   <line x1="${x+10}" x2="${x+w-10}" y1="${hy}" y2="${hy}" stroke="#fff" stroke-width="2"/>
+   ${[-2,-1,1,2].map(k=>`<line x1="${cx-(k%2?14:24)}" x2="${cx+(k%2?14:24)}" y1="${hy+k*h*.07}" y2="${hy+k*h*.07}" stroke="#fff" stroke-width="1.5"/>`).join("")}
+   <path d="M${cx-34} ${hy+4} L${cx-10} ${hy+4} L${cx} ${hy+12} L${cx+10} ${hy+4} L${cx+34} ${hy+4}" fill="none" stroke="#ffd400" stroke-width="4"/>
+   <rect x="${x+14}" y="${y+28}" width="${w*.13}" height="${h*.5}" fill="#2a2f35" opacity=".9"/><rect x="${x+w-14-w*.13}" y="${y+28}" width="${w*.13}" height="${h*.5}" fill="#2a2f35" opacity=".9"/>
+   ${[0,1,2,3,4,5].map(i=>`<line x1="${x+14+w*.08}" x2="${x+14+w*.13}" y1="${y+36+i*h*.08}" y2="${y+36+i*h*.08}" stroke="#fff"/><line x1="${x+w-14-w*.13}" x2="${x+w-14-w*.08}" y1="${y+36+i*h*.08}" y2="${y+36+i*h*.08}" stroke="#fff"/>`).join("")}
+   <rect x="${x+10}" y="${y+10}" width="${w-20}" height="${h*.08}" fill="#111" opacity=".85"/>
+   <path d="M${cx-w*.18} ${y+h-28} A${w*.2} ${w*.2} 0 0 1 ${cx+w*.18} ${y+h-28}" fill="#222" stroke="#fff" stroke-width="1.5"/>
+   ${Array.from({length:12},(_,i)=>`<rect x="${x+14+i*(w-28)/12}" y="${y+h-18}" width="${(w-28)/12-4}" height="9" rx="2" fill="#5a6168"/>`).join("")}`;
+}
+function mfdScreen(x,y,w,h){
+  const ew=w*.26;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${K.bez}"/><rect x="${x+10}" y="${y+10}" width="${w-20}" height="${h-34}" fill="#14261a"/>
+   <path d="M${x+ew+30} ${y+60} q40 -30 80 0 t70 20 v60 q-60 30 -120 0z" fill="#2f5a2c" opacity=".9"/><path d="M${x+ew+100} ${y+h-80} q30 -25 70 -5 t50 25 v30 h-120z" fill="#6b5326" opacity=".85"/>
+   <line x1="${x+ew+30}" y1="${y+h-50}" x2="${x+w-30}" y2="${y+40}" stroke="${K.mag}" stroke-width="3"/>
+   <path d="M${x+ew+(w-ew)/2} ${y+h/2-10} l8 20 h-16z" fill="#fff"/>
+   <rect x="${x+10}" y="${y+10}" width="${ew}" height="${h-34}" fill="#1b1f24"/>
+   ${["TRQ","ITT","NG"].map((l,i)=>`${gauge(x+10+ew/2,y+38+i*h*.22,h*.07,"#1b1f24")}${tx(x+10+ew/2,y+66+i*h*.22,l,{s:10,c:"#cfd6dc"})}`).join("")}
+   <rect x="${x+16}" y="${y+h*.7}" width="${ew-12}" height="${h*.12}" fill="#000"/><rect x="${x+20}" y="${y+h*.72}" width="${ew-20}" height="${h*.035}" fill="#d9a400"/>
+   ${Array.from({length:12},(_,i)=>`<rect x="${x+14+i*(w-28)/12}" y="${y+h-18}" width="${(w-28)/12-4}" height="9" rx="2" fill="#5a6168"/>`).join("")}`;
+}
 function panelSVG(){
-  const z=(id,inner)=>`<g class="hz" data-z="${id}" tabindex="0" role="button" aria-label="${esc(PANEL[id].t)}">${inner}</g>`;
-  const screen=(x,y,w,h,pfd)=>`<rect class="z" x="${x}" y="${y}" width="${w}" height="${h}" rx="8"/><rect x="${x+10}" y="${y+10}" width="${w-20}" height="${h-20}" rx="4" fill="var(--screen)"/>${pfd?`<rect x="${x+30}" y="${y+18}" width="${w-60}" height="${(h-36)/2}" fill="var(--sky)"/><rect x="${x+30}" y="${y+18+(h-36)/2}" width="${w-60}" height="${(h-36)/2}" fill="var(--ground)"/><line x1="${x+30}" x2="${x+w-30}" y1="${y+18+(h-36)/2}" y2="${y+18+(h-36)/2}" stroke="#fff" stroke-width="2"/>`:`<rect x="${x+18}" y="${y+18}" width="38" height="${h-36}" fill="var(--panel-2)"/><circle cx="${x+37}" cy="${y+42}" r="12" fill="none" stroke="#4cc76a" stroke-width="3"/><circle cx="${x+37}" cy="${y+78}" r="12" fill="none" stroke="#4cc76a" stroke-width="3"/>`}`;
-  return `<svg class="panelsvg" viewBox="0 0 1000 650" role="img" aria-label="Esquema do painel do Caravan G1000">
-   <path d="M40 150 Q500 30 960 150 Z" fill="var(--panel-2)"/>
-   <rect x="40" y="150" width="920" height="300" rx="14" fill="var(--panel-2)"/>
-   ${z("glare",`<rect class="z" x="410" y="80" width="180" height="46" rx="6"/><text x="500" y="109" text-anchor="middle">AFCS</text>`)}
-   ${z("lsw",`<rect class="z" x="56" y="166" width="126" height="150" rx="8"/>${[0,1,2].map(r=>[0,1,2].map(c=>`<rect x="${74+c*36}" y="${196+r*36}" width="14" height="22" rx="3" fill="${r===2?"#3f9b52":"#c9ced3"}"/>`).join("")).join("")}<text x="119" y="186" text-anchor="middle" class="svgs">LIGHTS · ICE</text>`)}
-   ${z("pfd",screen(196,166,206,150,1)+screen(600,166,206,150,1)+`<text x="299" y="336" text-anchor="middle" class="svgt" style="fill:var(--panel-ink)">PFD 1</text><text x="703" y="336" text-anchor="middle" class="svgt">PFD 2</text>`)}
-   ${z("mfd",screen(410,166,182,150,0)+`<text x="501" y="336" text-anchor="middle">MFD</text>`)}
-   ${z("test",`<rect class="z" x="56" y="328" width="126" height="108" rx="8"/><circle cx="90" cy="372" r="13" fill="#c62828"/><rect x="130" y="360" width="14" height="24" rx="3" fill="#c9ced3"/><circle cx="90" cy="416" r="8" fill="#c62828"/><text x="119" y="348" text-anchor="middle" class="svgs">TESTS</text>`)}
-   ${z("stby",`<rect class="z" x="410" y="346" width="182" height="58" rx="8"/><circle cx="445" cy="375" r="20" fill="var(--screen)" stroke="#9aa3ab"/><circle cx="501" cy="375" r="20" fill="var(--sky)" stroke="#9aa3ab"/><circle cx="557" cy="375" r="20" fill="var(--screen)" stroke="#9aa3ab"/>`)}
-   ${z("lowc",`<rect class="z" x="196" y="412" width="610" height="32" rx="6"/><text x="501" y="434" text-anchor="middle" class="svgs">PARKING BRAKE · A/C · CABIN HEAT · BLEED AIR</text>`)}
-   ${z("elec",`<rect class="z" x="40" y="470" width="160" height="165" rx="10"/><rect x="60" y="500" width="22" height="40" rx="3" fill="#c62828"/><rect x="100" y="500" width="14" height="24" rx="3" fill="#c9ced3"/><rect x="140" y="500" width="14" height="24" rx="3" fill="#c9ced3"/><rect x="100" y="545" width="14" height="24" rx="3" fill="#c9ced3"/><rect x="140" y="545" width="14" height="24" rx="3" fill="#c9ced3"/><rect x="60" y="585" width="22" height="34" rx="3" fill="#c62828"/><rect x="88" y="585" width="22" height="34" rx="3" fill="#c62828"/><text x="120" y="490" text-anchor="middle" class="svgs">ELÉTRICO</text>`)}
-   ${z("cb",`<rect class="z" x="212" y="470" width="176" height="165" rx="10"/>${[0,1,2,3,4].map(r=>[0,1,2,3,4,5].map(c=>`<circle cx="${236+c*26}" cy="${500+r*28}" r="8" fill="var(--panel-2)" stroke="#9aa3ab"/>`).join("")).join("")}`)}
-   ${z("ped",`<path class="z" d="M425 456 L575 456 L612 640 L388 640 Z"/><rect x="438" y="470" width="10" height="60" fill="#111" rx="2"/><rect x="460" y="470" width="8" height="70" fill="#9aa3ab"/><rect x="456" y="466" width="16" height="12" rx="3" fill="#c62828"/><rect x="482" y="470" width="8" height="80" fill="#9aa3ab"/><rect x="474" y="462" width="24" height="14" rx="3" fill="#222"/><rect x="506" y="470" width="8" height="70" fill="#9aa3ab"/><rect x="500" y="462" width="20" height="14" rx="3" fill="#2a74b8"/><rect x="528" y="470" width="8" height="60" fill="#9aa3ab"/><rect x="522" y="462" width="20" height="14" rx="3" fill="#c62828"/><rect x="552" y="470" width="8" height="70" fill="#9aa3ab"/><rect x="548" y="490" width="16" height="10" fill="#e9edf0"/><circle cx="538" cy="575" r="11" fill="#c62828"/><circle cx="500" cy="620" r="10" fill="#c62828"/><text x="500" y="604" text-anchor="middle" class="svgs">PEDESTAL</text>`)}
-   ${z("ovh",`<rect class="z" x="790" y="470" width="170" height="165" rx="10"/><text x="875" y="492" text-anchor="middle" class="svgs">TETO</text><path d="M815 600 A35 35 0 0 1 860 560" fill="none" stroke="#e3a21a" stroke-width="12"/><path d="M935 600 A35 35 0 0 0 890 560" fill="none" stroke="#e3a21a" stroke-width="12"/><rect x="820" y="590" width="40" height="12" rx="6" fill="#c9ced3"/><rect x="890" y="590" width="40" height="12" rx="6" fill="#c9ced3"/><rect x="858" y="505" width="14" height="28" rx="3" fill="#c62828"/><rect x="878" y="505" width="14" height="28" rx="3" fill="#c62828"/>`)}
+  const z=(id,inner,lx,ly,lbl)=>`<g class="hz" data-z="${id}" tabindex="0" role="button" aria-label="${esc(PANEL[id].t)}">${inner}${lbl?tx(lx,ly,lbl,{s:17}):""}</g>`;
+  const zr=(x,y,w,h,r=12)=>`<rect class="z" x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}"/>`;
+  return `<svg class="panelsvg" viewBox="0 0 1200 830" role="img" aria-label="Painel do Caravan G1000">
+   <path d="M30 190 Q600 15 1170 190 L1170 215 L30 215Z" fill="${K.dark}"/>
+   <rect x="30" y="195" width="1140" height="395" rx="20" fill="${K.bg}"/>
+   ${[[50,210],[1150,210],[50,575],[1150,575],[600,575]].map(p=>screw(...p)).join("")}
+   ${z("glare",`${zr(455,92,290,72,12)}${["HDG","APR","NAV","ALT","VS","FLC"].map((k,i)=>`<rect x="${470+i*44}" y="104" width="38" height="20" rx="4" fill="#5a6168"/>${tx(489+i*44,119,k,{s:11,c:"#fff"})}`).join("")}${["AP","YD","FD"].map((k,i)=>`<rect x="${470+i*44}" y="132" width="38" height="20" rx="4" fill="#5a6168"/>${tx(489+i*44,147,k,{s:11,c:"#fff"})}`).join("")}${knob(685,140,10)}`,0,0,"")}
+   ${tx(600,84,"AFCS (piloto automático)",{s:16,c:"var(--muted)"})}
+   ${z("lsw",`${zr(48,222,170,200)}${[0,1,2].map(r=>[0,1,2].map(c=>tog(85+c*48,268+r*58,r===2?K.green:K.w)).join("")).join("")}`,133,440,"LUZES · ANTIGELO")}
+   ${z("pfd",`${pfdScreen(232,218,290,224)}${pfdScreen(878,218,290-30,224)}`,0,0,"")}
+   ${tx(377,464,"PFD 1",{s:17})}${tx(1008,464,"PFD 2",{s:17})}
+   ${z("mfd",`${mfdScreen(532,218,336,224)}`,700,464,"MFD")}
+   ${z("test",`${zr(48,440,170,130)}${pushR(92,490,15)}${tog(165,500)}${knob(130,545,10,K.red)}`,133,592,"TESTES")}
+   ${z("stby",`${zr(532,478,336,96)}${gauge(590,524,32)}${gauge(700,524,32,K.sky,false)}<line x1="672" y1="526" x2="728" y2="526" stroke="#fff" stroke-width="2"/>${gauge(810,524,32,"#0b0e11",false)}`,0,0,"")}
+   ${z("lowc",`${zr(232,478,290,96)}${knob(262,525,12,K.dark)}${tx(262,563,"P.BRAKE",{s:11})}${[0,1,2].map(i=>tog(320+i*42,522)).join("")}${knob(470,522,16,K.dark)}`,377,592,"FREIO · AR · AQUEC.")}
+   ${z("ped",`<path class="z" d="M520 605 L880 605 L935 825 L465 825Z"/>
+     <rect x="540" y="618" width="26" height="150" rx="10" fill="#111"/>${[0,1,2,3,4,5,6].map(i=>`<line x1="540" x2="566" y1="${630+i*20}" y2="${630+i*20}" stroke="#444" stroke-width="3"/>`).join("")}
+     ${[[600,K.red],[650,"#111"],[700,K.blue],[750,K.red]].map(([x,c],i)=>`<rect x="${x-4}" y="618" width="8" height="120" rx="3" fill="#1c1f22"/><rect x="${x-(i===1?20:12)}" y="${640+i*6}" width="${i===1?40:24}" height="${i===1?24:20}" rx="5" fill="${c}" stroke="#000"/>`).join("")}
+     <rect x="806" y="618" width="8" height="120" rx="3" fill="#1c1f22"/><rect x="796" y="640" width="28" height="16" rx="3" fill="${K.w}"/><rect x="830" y="626" width="10" height="100" fill="#2a74b8" opacity=".7"/>
+     ${pushR(780,760,10)}`,700,0,"")}
+   <g transform="translate(0,34)">${z("elec",`${zr(30,618,200,170,14)}${guard(70,665,26,46)}${tog(125,665)}${tog(185,665)}${tog(70,735)}${tog(125,735)}${guard(185,738,26,44)}`,130,0,"")}
+   ${tx(130,612,"ELÉTRICO",{s:17})}
+   ${z("cb",`${zr(245,618,210,170,14)}${[0,1,2,3,4].map(r=>[0,1,2,3,4,5].map(c=>`<circle cx="${272+c*31}" cy="${645+r*30}" r="9" fill="#1c1f22" stroke="#9aa2a9" stroke-width="2"/>`).join("")).join("")}`,350,0,"")}
+   ${tx(350,612,"DISJUNTORES",{s:17})}
+   ${z("ovh",`${zr(955,618,215,170,14)}<path d="M985 760 A45 45 0 0 1 1040 712" fill="none" stroke="${K.amber}" stroke-width="14"/><path d="M1140 760 A45 45 0 0 0 1085 712" fill="none" stroke="${K.amber}" stroke-width="14"/><rect x="992" y="748" width="48" height="14" rx="7" fill="#d9dde0"/><rect x="1085" y="748" width="48" height="14" rx="7" fill="#d9dde0"/>${guard(1048,662,20,36)}${guard(1076,662,20,36)}`,1062,0,"")}
+   ${tx(1062,612,"TETO",{s:17})}</g>
+   ${tx(700,600,"PEDESTAL",{s:15,c:"var(--muted)"})}
+  </svg>`;
+}
+/* desenhos ampliados: cada controle numerado = item da lista */
+const DETAIL = {
+ elec:{vb:"0 0 600 600", bg:true, items:[
+  [0,(x,y)=>guard(x,y),110,105,"EXTERNAL POWER\nBUS·STARTER·OFF"],
+  [1,(x,y)=>tog(x,y),300,105,"BATTERY\nON / OFF"],
+  [2,(x,y)=>tog(x,y),110,245,"GENERATOR\nRESET·ON·TRIP"],
+  [3,(x,y)=>tog(x,y),300,245,"FUEL BOOST\nON·NORM·OFF"],
+  [4,(x,y)=>tog(x,y)+`<circle cx="${x}" cy="${y-62}" r="8" fill="${K.amber}"/>`,110,385,"STBY ALT PWR\nON / OFF"],
+  [5,(x,y)=>tog(x,y),300,385,"IGNITION\nON / NORM"],
+  [6,(x,y)=>tog(x,y),480,385,"STARTER\nSTART·OFF·MOTOR"],
+  [7,(x,y)=>guard(x-30,y,30,56)+guard(x+30,y,30,56),140,505,"AVIONICS STBY PWR · BUS TIE"],
+  [8,(x,y)=>tog(x-30,y)+tog(x+30,y),420,505,"AVIONICS 1 · 2"]]},
+ ped:{vb:"0 0 600 750", bg:true, items:[
+  [0,(x,y)=>`<rect x="${x-22}" y="${y-150}" width="44" height="300" rx="16" fill="#111"/>${Array.from({length:14},(_,i)=>`<line x1="${x-22}" x2="${x+22}" y1="${y-140+i*21}" y2="${y-140+i*21}" stroke="#3a3a3a" stroke-width="4"/>`).join("")}`,60,250,"ELEVATOR\nTRIM"],
+  [1,(x,y)=>`<rect x="${x-6}" y="60" width="12" height="270" rx="4" fill="${K.dark}"/><rect x="${x-18}" y="${y}" width="36" height="34" rx="6" fill="${K.red}" stroke="#000" stroke-width="2"/><path d="M${x-18} ${y+20} l36 -14 v8 l-36 14z" fill="#fff" opacity=".7"/>`,150,90,"EMERG"],
+  [2,(x,y)=>`<rect x="${x-6}" y="60" width="12" height="270" rx="4" fill="${K.dark}"/><rect x="${x-38}" y="${y}" width="76" height="40" rx="8" fill="#151515" stroke="#000" stroke-width="2"/><rect x="${x-34}" y="${y+4}" width="68" height="10" rx="4" fill="#fff" opacity=".12"/>`,240,110,"POWER"],
+  [3,(x,y)=>`<rect x="${x-6}" y="60" width="12" height="270" rx="4" fill="${K.dark}"/><rect x="${x-20}" y="${y}" width="40" height="34" rx="6" fill="${K.blue}" stroke="#000" stroke-width="2"/>${[0,1,2].map(i=>`<line x1="${x-20}" x2="${x+20}" y1="${y+8+i*9}" y2="${y+8+i*9}" stroke="#123" stroke-width="2"/>`).join("")}`,330,95,"PROP"],
+  [4,(x,y)=>`<rect x="${x-6}" y="60" width="12" height="270" rx="4" fill="${K.dark}"/><rect x="${x-20}" y="${y}" width="40" height="34" rx="6" fill="${K.red}" stroke="#000" stroke-width="2"/>${[0,1,2].map(i=>`<line x1="${x-20}" x2="${x+20}" y1="${y+8+i*9}" y2="${y+8+i*9}" stroke="#600" stroke-width="2"/>`).join("")}`,410,95,"COND"],
+  [5,(x,y)=>`<rect x="${x-6}" y="60" width="12" height="270" rx="4" fill="${K.dark}"/><rect x="${x+20}" y="70" width="18" height="250" fill="#2a74b8" opacity=".55"/>${["UP","10°","20°","FULL"].map((t,i)=>tx(x+70,90+i*75,t,{s:16})).join("")}<rect x="${x-26}" y="${y}" width="52" height="24" rx="5" fill="${K.w}" stroke="#000" stroke-width="2"/>`,500,75,"FLAPS"],
+  [6,(x,y)=>pushR(x,y,20),440,470,"FUEL SHUTOFF\nPULL OFF"],
+  [7,(x,y)=>`<rect x="${x-46}" y="${y-36}" width="92" height="72" rx="8" fill="#5a6168"/>`+pushR(x,y,22),300,670,"CABIN HEAT FIREWALL\nPULL OFF"],
+  [8,(x,y)=>`<path d="M${x-110} ${y-10} Q${x} ${y+40} ${x+110} ${y-10}" fill="none" stroke="#111" stroke-width="22" stroke-linecap="round"/>${knob(x,y-90,26,"#151515")}`,230,575,"AILERON / RUDDER TRIM"]],
+  extra:()=>tx(325,365,"Para trás: IDLE / BETA / REVERSE · FEATHER · CUTOFF",{s:13,c:K.dim})},
+ ovh:{vb:"0 0 600 460", bg:true, bgc:"#c9b79a", items:[
+  [0,(x,y)=>`<path d="M${x-150} ${y+20} A90 90 0 0 1 ${x-60} ${y-70}" fill="none" stroke="${K.amber}" stroke-width="26"/><path d="M${x+150} ${y+20} A90 90 0 0 0 ${x+60} ${y-70}" fill="none" stroke="${K.amber}" stroke-width="26"/><rect x="${x-150}" y="${y}" width="90" height="26" rx="13" fill="#e4e7ea" stroke="#555" stroke-width="2"/><rect x="${x+60}" y="${y}" width="90" height="26" rx="13" fill="#e4e7ea" stroke="#555" stroke-width="2"/>`+tx(x-170,y-60,"LEFT",{s:16,c:"#222"})+tx(x+170,y-60,"RIGHT",{s:16,c:"#222"})+tx(x-120,y+60,"ON",{s:14,c:"#222"})+tx(x-60,y-90,"OFF",{s:14,c:"#222"}),300,330,"FUEL TANK SELECTORS"],
+  [1,(x,y)=>guard(x-30,y,34,62)+guard(x+30,y,34,62),300,90,"STBY FLAP MOTOR"],
+  [2,(x,y)=>knob(x,y,26,"#3a3f45")+knob(x+400,y,26,"#3a3f45"),100,170,"VENT AIR"]], lblc:"#1d2125"},
+ lsw:{vb:"0 0 600 520", bg:true, items:[
+  [0,(x,y)=>tog(x-130,y)+tog(x,y)+tog(x+130,y),300,100,"LEFT LDG · TAXI/RECOG · RIGHT LDG"],
+  [1,(x,y)=>tog(x-130,y)+tog(x,y)+tog(x+130,y),300,220,"STROBE · NAV · BCN"],
+  [2,(x,y)=>tog(x-60,y)+tog(x+60,y),230,340,"NO SMOKING · SEAT BELT"],
+  [3,(x,y)=>tog(x,y,K.green),90,440,"P/S HEAT"],
+  [4,(x,y)=>tog(x,y,K.green),230,440,"STALL HEAT"],
+  [5,(x,y)=>knob(x,y,24),470,330,"PROP HEAT"]]},
+ test:{vb:"0 0 600 300", bg:true, items:[
+  [0,(x,y)=>pushR(x,y,26),120,130,"OVERSPEED GOV\nPUSH TO TEST"],
+  [1,(x,y)=>tog(x,y),310,140,"FIRE DETECT / FUEL\nSELECT OFF TEST"],
+  [2,(x,y)=>knob(x,y,22,K.red),490,140,"ALT STATIC AIR\nPULL ON"]]},
+ pfd:{vb:"0 0 600 440", items:[
+  [0,(x,y)=>"",70,190,""],[1,(x,y)=>"",300,40,""],[2,(x,y)=>"",530,190,""]], pre:()=>pfdScreen(20,20,560,400)},
+ mfd:{vb:"0 0 600 440", items:[
+  [0,(x,y)=>"",90,200,""],[1,(x,y)=>`<rect x="${x-80}" y="${y-30}" width="160" height="60" fill="#000" stroke="#555"/>${tx(x,y-6,"FUEL PRESS LOW",{s:14,c:K.amber})}${tx(x,y+18,"ENGINE FIRE",{s:14,c:"#ff5148"})}`,460,330,""],[2,(x,y)=>"",470,412,""]], pre:()=>mfdScreen(20,20,560,400)},
+ glare:{vb:"0 0 600 240", bg:true, items:[
+  [0,(x,y)=>["AP","YD","FD"].map((k,i)=>`<rect x="${x-110+i*80}" y="${y-22}" width="62" height="40" rx="6" fill="#5a6168"/>`+tx(x-79+i*80,y+6,k,{s:18,c:"#fff"})).join(""),190,170,""],
+  [1,(x,y)=>["HDG","NAV","APR","ALT","VS","FLC"].map((k,i)=>`<rect x="${x-255+i*85}" y="${y-22}" width="72" height="40" rx="6" fill="#5a6168"/>`+tx(x-219+i*85,y+6,k,{s:17,c:"#fff"})).join(""),300,80,""]]},
+ stby:{vb:"0 0 600 390", bg:true, items:[
+  [0,(x,y)=>gauge(x-180,y,62)+gauge(x,y,62,K.sky,false)+`<line x1="${x-50}" x2="${x+50}" y1="${y+4}" y2="${y+4}" stroke="#fff" stroke-width="3"/>`+gauge(x+180,y,62,"#0b0e11",false),300,120,"ASI · ATTITUDE · ALTIMETER"],
+  [1,(x,y)=>`<rect x="${x-60}" y="${y-30}" width="120" height="60" rx="8" fill="#5a6168"/><rect x="${x-50}" y="${y-8}" width="100" height="16" rx="6" fill="#111"/><rect x="${x-8}" y="${y-28}" width="16" height="44" rx="4" fill="#111"/>`,120,290,"INERTIAL SEPARATOR\nBYPASS-PULL / NORMAL-PUSH"]]},
+ lowc:{vb:"0 0 600 300", bg:true, items:[
+  [0,(x,y)=>`<rect x="${x-40}" y="${y-14}" width="80" height="28" rx="12" fill="#111"/>`,70,140,"PARKING\nBRAKE"],
+  [1,(x,y)=>tog(x,y,K.red),190,140,"A/C\nCOOL·OFF·VENT"],
+  [2,(x,y)=>tog(x-40,y)+tog(x,y)+tog(x+40,y),320,140,"AC FANS"],
+  [3,(x,y)=>tog(x,y),450,140,"BLEED AIR\nHEAT"],
+  [4,(x,y)=>knob(x,y,22),545,140,"MIXING\nAIR"]]},
+ cb:{vb:"0 0 600 420", bg:true, items:[
+  [0,(x,y)=>"",420,110,"FUEL QTY"],[1,(x,y)=>"",530,60,"GEN CONT/FIELD"],[2,(x,y)=>"",230,250,"RADAR R/T"],[3,(x,y)=>"",480,200,"R PITOT HEAT"]],
+  pre:()=>`${[0,1,2,3,4,5].map(r=>[0,1,2,3,4,5,6,7,8,9].map(c=>`<circle cx="${60+c*54}" cy="${60+r*58}" r="14" fill="#1c1f22" stroke="#9aa2a9" stroke-width="3"/>`).join("")).join("")}`}
+};
+function detailSVG(id){
+  const D=DETAIL[id]; if(!D) return "";
+  const [,,W,H]=D.vb.split(" ").map(Number);
+  const lc=D.lblc||K.lbl;
+  return `<svg class="panelsvg dsvg" viewBox="${D.vb}" role="img" aria-label="${esc(PANEL[id].t)} ampliado">
+    ${D.bg?`<rect x="0" y="0" width="${W}" height="${H}" rx="18" fill="${D.bgc||K.bg}"/>${[[16,16],[W-16,16],[16,H-16],[W-16,H-16]].map(p=>screw(...p)).join("")}`:""}
+    ${D.pre?D.pre():""}${D.extra?D.extra():""}
+    ${D.items.map(([ci,draw,x,y,l],k)=>`<g class="dc" data-ci="${ci}" tabindex="0" role="button">${draw(x,y)}${l?tx(x,y+(id==="ped"&&ci>=1&&ci<=5?-(y-38):52),l,{s:15,c:lc}):""}${badge(x+(id==="pfd"||id==="mfd"||id==="cb"?0:38),y-(id==="pfd"||id==="mfd"||id==="cb"?0:38),ci+1)}</g>`).join("")}
   </svg>`;
 }
 function rPan(arg){
-  main.innerHTML = `<h2>Painel</h2><p class="lead">Esquema simplificado do painel do Caravan G1000. Toque numa área para ver os controles, o nome em inglês e em quais memory items ele aparece.</p>
+  main.innerHTML = `<h2>Painel</h2><p class="lead">Desenho do painel do Caravan G1000. Toque numa área: ela abre ampliada, com cada controle numerado. O número no desenho é o mesmo da lista.</p>
    ${panelSVG()}<div id="zinfo" style="margin-top:14px"></div>`;
-  main.querySelectorAll(".hz").forEach(g=>{ g.onclick=()=>zone(g.dataset.z); g.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); zone(g.dataset.z);} }; });
+  main.querySelectorAll(".hz").forEach(g=>{ g.onclick=()=>{ zone(g.dataset.z); $("#zinfo").scrollIntoView({behavior:"smooth",block:"start"}); }; g.onkeydown=e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); zone(g.dataset.z);} }; });
   zone(arg&&arg.z||"ped", arg&&arg.c);
 }
 function zone(id, ctl){
   main.querySelectorAll(".hz").forEach(g=>g.classList.toggle("on", g.dataset.z===id));
   const P=PANEL[id]; const key=(ctl||"").toUpperCase().split(/[ (]/)[0];
-  $("#zinfo").innerHTML = `<div class="box"><h3>${esc(P.t)} <span style="color:var(--muted);font-weight:400">· ${esc(P.en)}</span></h3><p class="ptx" style="margin:4px 0 8px">${esc(P.where)}</p>
-   ${P.ctl.map(c=>{ const hl = key && c[0].toUpperCase().includes(key); return `<div class="ctl${hl?" hl":""}"><div style="display:flex;gap:8px;align-items:center;justify-content:space-between"><b>${esc(c[0])}</b>${playBtn(c[0])}</div>
+  $("#zinfo").innerHTML = `<div class="box"><h3>${esc(P.t)} <span style="color:var(--muted);font-weight:400">· ${esc(P.en)}</span></h3><p class="ptx" style="margin:4px 0 10px">${esc(P.where)}</p>
+   ${detailSVG(id)}
+   <div style="margin-top:12px">${P.ctl.map((c,i)=>{ const hl = key && c[0].toUpperCase().includes(key); return `<div class="ctl${hl?" hl":""}" data-li="${i}"><div style="display:flex;gap:10px;align-items:center;justify-content:space-between"><span style="display:flex;gap:10px;align-items:center"><span class="chip" style="background:var(--accent);color:var(--accent-ink);min-width:26px;justify-content:center">${i+1}</span><b>${esc(c[0])}</b></span>${playBtn(c[0])}</div>
     <div class="pron">${esc(pron(c[0].replace(/\(.*?\)/g,"")))}</div><div>${esc(c[1])}. <span class="ptx">${esc(c[2])}</span></div>
-    ${c[3].length?`<div class="tags">${c[3].map(e=>`<button data-gomem="${e}">${e} ${esc(MEM.find(m=>m.id===e).pt)}</button>`).join("")}</div>`:""}</div>`; }).join("")}</div>`;
+    ${c[3].length?`<div class="tags">${c[3].map(e=>`<button data-gomem="${e}">${e} ${esc(MEM.find(m=>m.id===e).pt)}</button>`).join("")}</div>`:""}</div>`; }).join("")}</div></div>`;
+  const pick=i=>{ $("#zinfo").querySelectorAll(".dc").forEach(g=>g.classList.toggle("on",+g.dataset.ci===i)); $("#zinfo").querySelectorAll(".ctl").forEach(d=>d.classList.toggle("hl",+d.dataset.li===i)); };
+  $("#zinfo").querySelectorAll(".dc").forEach(g=>g.onclick=()=>{ const i=+g.dataset.ci; pick(i); const el=$(`#zinfo .ctl[data-li="${i}"]`); if(el) el.scrollIntoView({behavior:"smooth",block:"center"}); });
+  $("#zinfo").querySelectorAll(".ctl").forEach(d=>d.onclick=e=>{ if(e.target.closest("button")) return; pick(+d.dataset.li); });
   $("#zinfo").querySelectorAll("[data-gomem]").forEach(b=>b.onclick=()=>{ go("mem"); memDetail(b.dataset.gomem); });
-  if(ctl){ const h=$("#zinfo .hl"); if(h) h.scrollIntoView({block:"center"}); }
+  if(ctl){ const h=$("#zinfo .hl"); if(h){ pick(+h.dataset.li); h.scrollIntoView({block:"center"}); } }
 }
 
 /* ---------- Simulado ---------- */
