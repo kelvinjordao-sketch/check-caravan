@@ -1,23 +1,17 @@
 {
- "name": "Check Caravan VOARE",
- "short_name": "Check C208",
- "start_url": "./",
- "scope": "./",
- "display": "standalone",
- "background_color": "#0e1114",
- "theme_color": "#0e1114",
- "lang": "pt-BR",
- "icons": [
-  {
-   "src": "icon-192.png",
-   "sizes": "192x192",
-   "type": "image/png"
-  },
-  {
-   "src": "icon-512.png",
-   "sizes": "512x512",
-   "type": "image/png",
-   "purpose": "any maskable"
-  }
- ]
+  "name": "Check Caravan VOARE",
+  "short_name": "Check C208",
+  "description": "Painel de estudo do check oral da Cessna 208B/208B EX G1000 — SOP VOARE Rev. 00.",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04070d",
+  "theme_color": "#04070d",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
 }
